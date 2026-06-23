@@ -24,14 +24,14 @@ INSTALLED_APPS = [
 
 ```html
 {% component "Icon" name="house" / %}
-{% component "Icon" name="house" variant="bold" / %}
+{% component "Icon" name="house" weight="bold" / %}
 {% component "Icon" name="house" style="stroke" size=24 color="#ff0000" / %}
 ```
 
 | Kwarg | Type | Default | Description |
 |---|---|---|---|
 | `name` | `str` | — | Icon name, e.g. `"house"` |
-| `variant` | `str` | `"regular"` | `bold`, `duotone`, `fill`, `light`, `regular`, `thin` |
+| `weight` | `str` | `"regular"` | `bold`, `duotone`, `fill`, `light`, `regular`, `thin` |
 | `style` | `str` | `"flat"` | `flat` or `stroke` |
 | `size` | `int` | `None` | Sets width and height in px |
 | `color` | `str` | `None` | Sets CSS `color` |
@@ -47,7 +47,7 @@ PHOSPHOR_ICONS = {
     "auto_register": True,        # Auto-register the component on startup (default: True)
     "component_name": "Icon",     # Template tag name (default: "Icon")
     "default_style": "flat",      # Default style (default: "flat")
-    "default_variant": "regular", # Default variant (default: "regular")
+    "default_weight": "regular",   # Default weight (default: "regular")
     "cache": True,                # Cache rendered output per unique set of kwargs (default: True)
 }
 ```

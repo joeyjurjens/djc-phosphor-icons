@@ -11,7 +11,7 @@ from djc_phosphor_icons.app_settings import get_setting
 
 SVGS_DIR = Path(__file__).parent.parent / "svgs"
 
-VALID_VARIANTS = frozenset({"bold", "duotone", "fill", "light", "regular", "thin"})
+VALID_WEIGHTS = frozenset({"bold", "duotone", "fill", "light", "regular", "thin"})
 VALID_STYLES = frozenset({"flat", "stroke"})
 
 SVG_INNER_RE = re.compile(r"<svg[^>]*>(.*)</svg>", re.DOTALL)
@@ -25,7 +25,7 @@ class Icon(Component):
 
     class Kwargs:
         name: str
-        variant: str
+        weight: str
         style: str
         size: int | None
         color: str | None
@@ -33,7 +33,7 @@ class Icon(Component):
         attrs: dict[str, Any] | None
 
     class Defaults:
-        variant = Default(lambda: get_setting("default_variant", "regular"))
+        weight = Default(lambda: get_setting("default_weight", "regular"))
         style = Default(lambda: get_setting("default_style", "flat"))
         size = None
         color = None
@@ -41,18 +41,17 @@ class Icon(Component):
         attrs = None
 
     def get_template_data(self, args, kwargs: "Icon.Kwargs", slots, context: Context) -> dict:
-        if kwargs.variant not in VALID_VARIANTS:
+        if kwargs.weight not in VALID_WEIGHTS:
             raise ValueError(
-                f"Invalid variant '{kwargs.variant}'. "
-                f"Choose from: {', '.join(sorted(VALID_VARIANTS))}"
+                f"Invalid weight '{kwargs.weight}'. Choose from: {', '.join(sorted(VALID_WEIGHTS))}"
             )
         if kwargs.style not in VALID_STYLES:
             raise ValueError(
                 f"Invalid style '{kwargs.style}'. Choose from: {', '.join(sorted(VALID_STYLES))}"
             )
 
-        filename = kwargs.name if kwargs.variant == "regular" else f"{kwargs.name}-{kwargs.variant}"
-        svg_path = SVGS_DIR / kwargs.style / kwargs.variant / f"{filename}.svg"
+        filename = kwargs.name if kwargs.weight == "regular" else f"{kwargs.name}-{kwargs.weight}"
+        svg_path = SVGS_DIR / kwargs.style / kwargs.weight / f"{filename}.svg"
 
         if not svg_path.exists():
             icon_names = [
@@ -64,7 +63,7 @@ class Icon(Component):
             hint = f" Did you mean: {', '.join(fuzzy)}?" if fuzzy else ""
             raise FileNotFoundError(
                 f"Icon '{kwargs.name}' "
-                f"(variant: {kwargs.variant}, style: {kwargs.style}) not found.{hint}"
+                f"(weight: {kwargs.weight}, style: {kwargs.style}) not found.{hint}"
             )
 
         match = SVG_INNER_RE.search(svg_path.read_text())

@@ -11,7 +11,7 @@ from pathlib import Path
 DEST_DIR = Path(__file__).parent.parent / "djc_phosphor_icons" / "svgs"
 VERSION_FILE = Path(__file__).parent.parent / "djc_phosphor_icons" / "phosphor_version.txt"
 README = Path(__file__).parent.parent / "README.md"
-VARIANTS = ["thin", "light", "regular", "bold", "fill", "duotone"]
+WEIGHTS = ["thin", "light", "regular", "bold", "fill", "duotone"]
 STYLES = {
     "flat": "SVGs Flat",
     "stroke": "SVGs",
@@ -36,16 +36,16 @@ def download_icons(version: str) -> None:
 
     with zipfile.ZipFile(io.BytesIO(data)) as zf:
         for style, zip_folder in STYLES.items():
-            for variant in VARIANTS:
-                dest = DEST_DIR / style / variant
+            for weight in WEIGHTS:
+                dest = DEST_DIR / style / weight
                 dest.mkdir(parents=True)
-                prefix = f"{zip_folder}/{variant}/"
+                prefix = f"{zip_folder}/{weight}/"
                 extracted = 0
                 for name in zf.namelist():
                     if name.startswith(prefix) and name.endswith(".svg"):
                         (dest / Path(name).name).write_bytes(zf.read(name))
                         extracted += 1
-                print(f"  {style}/{variant}: {extracted} icons")
+                print(f"  {style}/{weight}: {extracted} icons")
 
     VERSION_FILE.write_text(version)
     print(f"\nDone! Icons saved to {DEST_DIR} (Phosphor {version})")
@@ -59,10 +59,10 @@ def find_missing_icons() -> dict[str, list[str]]:
     for name in canonical:
         gaps = []
         for style in STYLES:
-            for variant in VARIANTS:
-                filename = name if variant == "regular" else f"{name}-{variant}"
-                if not (DEST_DIR / style / variant / f"{filename}.svg").exists():
-                    gaps.append(f"`{style}/{variant}`")
+            for weight in WEIGHTS:
+                filename = name if weight == "regular" else f"{name}-{weight}"
+                if not (DEST_DIR / style / weight / f"{filename}.svg").exists():
+                    gaps.append(f"`{style}/{weight}`")
         if gaps:
             missing[name] = gaps
     return missing
@@ -80,10 +80,10 @@ def update_readme_issues(version: str) -> None:
         for name, gaps in sorted(missing.items()):
             lines.append(f"- **{name}**: missing from {', '.join(gaps)}")
         section = "\n".join(lines)
-        print(f"\nFound {len(missing)} icon(s) with missing variants — updating README.")
+        print(f"\nFound {len(missing)} icon(s) with missing weights — updating README.")
     else:
         section = "## Known Icon Issues\n\nNo issues found."
-        print("\nNo missing variants found.")
+        print("\nNo missing weights found.")
 
     block = f"{ISSUES_START}\n{section}\n{ISSUES_END}"
     content = README.read_text() if README.exists() else ""

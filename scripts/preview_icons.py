@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ruff: noqa: E501
-"""Generate preview.html with all icons rendered in every variant and style."""
+"""Generate preview.html with all icons rendered in every weight and style."""
 
 import os
 import sys
@@ -17,24 +17,24 @@ django.setup()
 
 from djc_phosphor_icons.components.icon import SVGS_DIR, Icon  # noqa: E402
 
-VARIANTS = ["regular", "thin", "light", "bold", "fill", "duotone"]
+WEIGHTS = ["regular", "thin", "light", "bold", "fill", "duotone"]
 STYLES = ["flat", "stroke"]
 OUTPUT = ROOT / "docs" / "preview.html"
 
 
-def render_icon(name, variant, style):
+def render_icon(name, weight, style):
     try:
-        return Icon.render(kwargs={"name": name, "variant": variant, "style": style})
+        return Icon.render(kwargs={"name": name, "weight": weight, "style": style})
     except FileNotFoundError:
         return '<svg viewBox="0 0 256 256" class="missing"><line x1="0" y1="0" x2="256" y2="256" stroke="red" stroke-width="16"/><line x1="256" y1="0" x2="0" y2="256" stroke="red" stroke-width="16"/></svg>'
 
 
 def main():
     names = sorted(p.stem for p in (SVGS_DIR / "flat" / "regular").glob("*.svg"))
-    print(f"Rendering {len(names)} icons × {len(VARIANTS)} variants × {len(STYLES)} styles...")
+    print(f"Rendering {len(names)} icons × {len(WEIGHTS)} weights × {len(STYLES)} styles...")
 
     header_cells = "".join(
-        f"<th>{style}<br><small>{variant}</small></th>" for style in STYLES for variant in VARIANTS
+        f"<th>{style}<br><small>{weight}</small></th>" for style in STYLES for weight in WEIGHTS
     )
 
     rows = []
@@ -42,9 +42,9 @@ def main():
         if i % 100 == 0:
             print(f"  {i}/{len(names)}")
         cells = "".join(
-            f'<td title="{name} · {variant} · {style}">{render_icon(name, variant, style)}</td>'
+            f'<td title="{name} · {weight} · {style}">{render_icon(name, weight, style)}</td>'
             for style in STYLES
-            for variant in VARIANTS
+            for weight in WEIGHTS
         )
         rows.append(f"<tr><td class='name'>{name}</td>{cells}</tr>")
 

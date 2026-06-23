@@ -182,8 +182,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django", specifier = ">=5.2.15" },
-    { name = "django-components", specifier = ">=0.151.0" },
+    { name = "django", specifier = ">=5.2" },
+    { name = "django-components" },
 ]
 
 [package.metadata.requires-dev]
