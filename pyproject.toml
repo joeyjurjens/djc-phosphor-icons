@@ -1,6 +1,6 @@
 [project]
 name = "djc-phosphor-icons"
-version = "0.0.1"
+version = "0.0.2"
 description = "Phosphor Icons as django-components"
 readme = "README.md"
 authors = [
