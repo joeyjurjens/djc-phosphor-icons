@@ -2,6 +2,8 @@
 
 [Phosphor Icons](https://phosphoricons.com) as [django-components](https://github.com/EmilStenstrom/django-components).
 
+[Browse all icons →](https://joeyjurjens.github.io/djc-phosphor-icons/preview.html)
+
 ## Installation
 
 ```bash
