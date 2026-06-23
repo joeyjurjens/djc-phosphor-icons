@@ -8,8 +8,8 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "django>=5.2.15",
-    "django-components>=0.151.0",
+    "django>=5.2",
+    "django-components",
 ]
 
 [tool.hatch.build.targets.wheel]
