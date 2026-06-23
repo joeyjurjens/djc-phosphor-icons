@@ -45,7 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add djc_phosphor_icons/svgs/ djc_phosphor_icons/phosphor_version.txt pyproject.toml README.md preview.html
+          git add djc_phosphor_icons/svgs/ djc_phosphor_icons/phosphor_version.txt pyproject.toml README.md docs/preview.html
           git commit -m "chore: sync with phosphor ${{ steps.check.outputs.new_version }}"
           git tag "v${{ steps.version.outputs.new_version }}"
           git push && git push --tags

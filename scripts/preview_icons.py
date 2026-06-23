@@ -19,7 +19,7 @@ from djc_phosphor_icons.components.icon import SVGS_DIR, Icon  # noqa: E402
 
 VARIANTS = ["regular", "thin", "light", "bold", "fill", "duotone"]
 STYLES = ["flat", "stroke"]
-OUTPUT = ROOT / "preview.html"
+OUTPUT = ROOT / "docs" / "preview.html"
 
 
 def render_icon(name, variant, style):
