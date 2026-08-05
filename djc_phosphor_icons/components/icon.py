@@ -82,7 +82,7 @@ class Icon(Component):
             "viewBox": "0 0 256 256",
             "aria-hidden": "true",
         }
-        if kwargs.style == "flat":
+        if kwargs.style == "flat" or kwargs.weight == "fill":
             default_attrs["fill"] = "currentColor"
         if style_parts:
             default_attrs["style"] = " ".join(style_parts)
