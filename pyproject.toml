@@ -1,12 +1,12 @@
 [project]
 name = "djc-phosphor-icons"
-version = "0.1.0"
+version = "0.2.0"
 description = "Phosphor Icons as django-components"
 readme = "README.md"
 authors = [
     { name = "Joey Jurjens", email = "joeyjurjens@gmail.com" }
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = [
     "django>=5.2",
     "django-components",
@@ -34,6 +34,9 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
 
 [tool.ruff.format]
 quote-style = "double"

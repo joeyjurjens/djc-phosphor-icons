@@ -30,9 +30,9 @@ def download_icons(version: str) -> None:
         data = response.read()
 
     print("Extracting SVGs...")
-    if DEST_DIR.exists():
-        shutil.rmtree(DEST_DIR)
-    DEST_DIR.mkdir(parents=True)
+    # Per style, so the package modules living alongside them survive.
+    for style in STYLES:
+        shutil.rmtree(DEST_DIR / style, ignore_errors=True)
 
     with zipfile.ZipFile(io.BytesIO(data)) as zf:
         for style, zip_folder in STYLES.items():
