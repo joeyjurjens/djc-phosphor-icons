@@ -3,23 +3,39 @@ from unittest.mock import patch
 import pytest
 from django.test import override_settings
 
-from djc_phosphor_icons.components.icon import SVGS_DIR, VALID_STYLES, VALID_WEIGHTS, Icon
+from djc_phosphor_icons.components.icon import Icon
+from djc_phosphor_icons.svgs import VALID_STYLES, VALID_WEIGHTS, exists, icon_names
 
 
 def all_icon_combinations():
-    names = sorted(p.stem for p in (SVGS_DIR / "flat" / "regular").glob("*.svg"))
     return [
         (name, weight, style)
-        for name in names
+        for name in icon_names()
         for weight in sorted(VALID_WEIGHTS)
         for style in sorted(VALID_STYLES)
     ]
 
 
-@pytest.mark.parametrize("name,weight,style", all_icon_combinations())
+def shipped_combinations():
+    return [combo for combo in all_icon_combinations() if exists(*combo)]
+
+
+def unshipped_combinations():
+    """Combinations Phosphor itself is missing - see "Known Icon Issues" in the README."""
+    return [combo for combo in all_icon_combinations() if not exists(*combo)]
+
+
+@pytest.mark.parametrize("name,weight,style", shipped_combinations())
 def test_icon_renders(name, weight, style):
     output = Icon.render(kwargs={"name": name, "weight": weight, "style": style})
     assert "<svg" in output
+
+
+@pytest.mark.parametrize("name,weight,style", unshipped_combinations())
+def test_unshipped_icon_raises_with_suggestions(name, weight, style):
+    with pytest.raises(FileNotFoundError) as excinfo:
+        Icon.render(kwargs={"name": name, "weight": weight, "style": style})
+    assert name in str(excinfo.value)
 
 
 @override_settings(PHOSPHOR_ICONS={"cache": True})

@@ -15,7 +15,8 @@ import django  # noqa: E402
 
 django.setup()
 
-from djc_phosphor_icons.components.icon import SVGS_DIR, Icon  # noqa: E402
+from djc_phosphor_icons.components.icon import Icon  # noqa: E402
+from djc_phosphor_icons.svgs import icon_names  # noqa: E402
 
 WEIGHTS = ["regular", "thin", "light", "bold", "fill", "duotone"]
 STYLES = ["flat", "stroke"]
@@ -30,7 +31,7 @@ def render_icon(name, weight, style):
 
 
 def main():
-    names = sorted(p.stem for p in (SVGS_DIR / "flat" / "regular").glob("*.svg"))
+    names = icon_names()
     print(f"Rendering {len(names)} icons × {len(WEIGHTS)} weights × {len(STYLES)} styles...")
 
     header_cells = "".join(
